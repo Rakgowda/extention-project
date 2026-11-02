@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Local LLM Assistant</title>
+    <link rel="stylesheet" href="sidepanel.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">&#9670;</div>
+        <div class="brand-text">
+          <span class="brand-name">Local Assistant</span>
+          <span class="status">
+            <span id="statusDot" class="dot"></span>
+            <span id="statusText">Connecting&hellip;</span>
+          </span>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <button id="clearBtn" class="icon-btn" title="New chat" aria-label="New chat">&#10227;</button>
+        <button id="settingsBtn" class="icon-btn" title="Settings" aria-label="Settings">&#9881;</button>
+      </div>
+    </header>
+
+    <section id="chatBar" class="chat-bar" hidden>
+      <div class="chat-bar-row">
+        <span id="platformBadge" class="platform-badge">Chat</span>
+        <span id="chatBarTitle" class="chat-bar-title">Current chat</span>
+        <span id="chatBarCount" class="chat-bar-count"></span>
+      </div>
+      <div class="chat-bar-row chat-bar-actions">
+        <button id="suggestRepliesBtn" class="primary-btn" type="button">&#10022; Suggest replies</button>
+        <button id="readChatBtn" class="ghost-btn" type="button" title="Re-read this conversation">&#8635; Refresh</button>
+      </div>
+    </section>
+
+    <section id="settings" class="settings" hidden>
+      <label class="field">
+        <span>Endpoint</span>
+        <div class="endpoint-row">
+          <input id="endpointInput" type="text" spellcheck="false" placeholder="http://localhost:11434" />
+          <button id="refreshModelsBtn" class="small-btn" type="button">Refresh</button>
+        </div>
+      </label>
+      <label class="field">
+        <span>Model</span>
+        <select id="modelSelect"></select>
+      </label>
+      <label class="field">
+        <span>Prompt</span>
+        <select id="promptSelect"></select>
+      </label>
+      <label class="field">
+        <span>System prompt</span>
+        <textarea id="systemPromptInput" rows="3"></textarea>
+      </label>
+      <div class="prompt-actions">
+        <input id="promptNameInput" type="text" placeholder="Prompt name (optional)" />
+        <button id="savePromptBtn" class="small-btn" type="button">Save</button>
+        <button id="deletePromptBtn" class="small-btn" type="button" disabled>Delete</button>
+      </div>
+      <p class="hint">
+        Models come from your local Ollama. Pull one with <code>ollama pull llama3.2</code>.
+        If requests are blocked, restart Ollama with
+        <code>OLLAMA_ORIGINS="chrome-extension://*"</code>.
+      </p>
+    </section>
+
+    <main id="messages" class="messages">
+      <div class="empty" id="emptyState">
+        <div class="empty-logo">&#9670;</div>
+        <h1 id="emptyTitle">Ask about this page</h1>
+        <p id="emptyDesc">
+          I run on your local Ollama model and can read the page you are viewing.
+          Nothing leaves your machine.
+        </p>
+      </div>
+    </main>
+
+    <footer class="composer-wrap">
+      <div class="page-chip" id="pageChip" hidden>
+        <span class="page-chip-icon">&#9636;</span>
+        <span class="page-chip-text" id="pageChipText">Current page</span>
+        <label class="switch" title="Include page content">
+          <input type="checkbox" id="includePageToggle" />
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="quick-actions" id="quickActions">
+        <button type="button" data-prompt="Summarize this page in a few sentences.">Summarize</button>
+        <button type="button" data-prompt="List the key points from this page as bullets.">Key points</button>
+        <button type="button" data-prompt="Explain the main ideas on this page like I'm new to the topic.">Explain</button>
+      </div>
+
+      <div class="composer">
+        <textarea id="input" rows="1" placeholder="Ask anything about this page&hellip;"></textarea>
+        <button id="sendBtn" class="send-btn" title="Send" aria-label="Send">&#10148;</button>
+      </div>
+      <div class="composer-foot">Enter to send &middot; Shift+Enter for a new line</div>
+    </footer>
+
+    <div id="toast" class="toast" role="status"></div>
+
+    <script src="sidepanel.js"></script>
+  </body>
+</html>
